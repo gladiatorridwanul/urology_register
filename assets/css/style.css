@@ -1,0 +1,268 @@
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --sidebar-bg: #2563eb;
+    --sidebar-hover: #1e40af;
+    --bg: #f0f4f9;
+}
+* { box-sizing: border-box; }
+body { margin:0; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); }
+.app-wrapper { display:flex; min-height:100vh; }
+
+/* ============ SIDEBAR ============ */
+.sidebar {
+    width: 250px;
+    background: var(--sidebar-bg);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top:0; left:0; bottom:0;
+    transition: transform .3s;
+    z-index: 1000;
+    overflow-y: auto;
+}
+.sidebar-header {
+    padding: 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+    text-align: center;
+    flex-shrink: 0;
+}
+.user-avatar {
+    width: 80px; height:80px;
+    border-radius:50%;
+    background: rgba(255,255,255,.2);
+    display:flex; align-items:center; justify-content:center;
+    margin: 0 auto 12px;
+    font-size: 32px;
+    border: 3px solid rgba(255,255,255,.4);
+}
+.user-info strong { display:block; font-size:15px; }
+.user-info small { opacity:.8; font-size:12px; }
+
+.sidebar-nav {
+    padding: 12px 0;
+    flex:1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============ BASE NAV ITEM ============ */
+.sidebar-nav .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background .2s, border-color .2s;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    user-select: none;
+    background: transparent;
+}
+.sidebar-nav .nav-item:hover { background: var(--sidebar-hover); }
+.sidebar-nav .nav-item.active { background: var(--sidebar-hover); border-left-color:#fff; }
+.sidebar-nav .nav-item i:first-child { width:20px; text-align:center; flex-shrink: 0; }
+.sidebar-nav .nav-item span { flex: 1; }
+
+/* ============ LOGOUT ============ */
+.sidebar-nav .nav-logout {
+    color: #fecaca !important;
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,.10);
+}
+.sidebar-nav .nav-logout i:first-child { color: #fca5a5; }
+.sidebar-nav .nav-logout:hover {
+    background: rgba(220, 38, 38, .22);
+    color: #ffffff !important;
+}
+.sidebar-nav .nav-logout:hover i:first-child { color: #ffffff; }
+
+/* ============================================================
+   SETTINGS GROUP — BULLETPROOF COLLAPSE
+   ============================================================ */
+
+/* The wrapper */
+.sidebar-nav .nav-group { display: block; }
+
+/* Parent toggle gets darker background when open */
+.sidebar-nav .nav-group .nav-toggle { position: relative; }
+.sidebar-nav .nav-group.is-open .nav-toggle {
+    background: rgba(0, 0, 0, 0.18);
+}
+
+/* Chevron rotation */
+.sidebar-nav .nav-chevron {
+    font-size: 11px;
+    opacity: .8;
+    margin-left: auto;
+    width: auto !important;
+    transition: transform .25s ease;
+    transform-origin: center;
+}
+.sidebar-nav .nav-group.is-open .nav-chevron {
+    transform: rotate(90deg);
+    opacity: 1;
+}
+
+/* ------------------------------------------------------------
+   SUB-MENU — HIDDEN BY DEFAULT, SHOWN ONLY WHEN .is-open
+   Uses three redundant hide techniques so nothing can override it
+   ------------------------------------------------------------ */
+
+/* Default state: fully hidden */
+.sidebar-nav .nav-group .nav-sub {
+    display: block !important;
+    max-height: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0;
+    visibility: hidden;
+    margin: 0 12px 0 24px;
+    padding: 0 0 0 12px;
+    background: rgba(0,0,0,.10);
+    border-left: 2px solid rgba(255,255,255,.20);
+    border-radius: 0 6px 6px 0;
+    transition: max-height .25s ease, opacity .2s ease, padding .2s ease;
+}
+
+/* Open state: visible with auto height */
+.sidebar-nav .nav-group.is-open .nav-sub {
+    max-height: 500px !important;
+    height: auto !important;
+    overflow: visible !important;
+    opacity: 1;
+    visibility: visible;
+    padding: 6px 0 6px 12px;
+}
+
+/* Make sure no old rules survive */
+.sidebar-nav .nav-sub.open { /* legacy override — ignored */ }
+
+/* ------------------------------------------------------------
+   SUB-MENU ITEMS
+   ------------------------------------------------------------ */
+.sidebar-nav .nav-sub-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    color: rgba(255,255,255,.85);
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 6px;
+    transition: background .15s, color .15s, transform .15s, border-color .15s;
+    margin: 3px 0;
+    border-left: 2px solid transparent;
+}
+.sidebar-nav .nav-sub-item i {
+    width: 16px;
+    text-align: center;
+    font-size: 12px;
+    opacity: .85;
+    flex-shrink: 0;
+}
+.sidebar-nav .nav-sub-item span { flex: 1; }
+.sidebar-nav .nav-sub-item:hover {
+    background: rgba(255,255,255,.14);
+    color: #fff;
+    transform: translateX(2px);
+}
+.sidebar-nav .nav-sub-item:hover i { opacity: 1; }
+.sidebar-nav .nav-sub-item.active {
+    background: rgba(255,255,255,.20);
+    color: #fff;
+    font-weight: 600;
+    border-left-color: #fff;
+}
+.sidebar-nav .nav-sub-item.active i { opacity: 1; }
+
+/* ============ MAIN CONTENT ============ */
+.main-content {
+    flex: 1;
+    margin-left: 250px;
+    min-width: 0;
+}
+.topbar {
+    background:#fff;
+    padding: 14px 24px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    position: sticky; top:0; z-index:99;
+}
+.content-area { padding: 24px; }
+
+.card { border: none; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.card-header { background:#fff; border-bottom:1px solid #eef2f7; font-weight:600; border-radius:12px 12px 0 0 !important; }
+
+.stat-card {
+    background:#fff; border-radius:12px; padding:20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    display:flex; justify-content:space-between; align-items:center;
+}
+.stat-card .icon-circle {
+    width:48px; height:48px; border-radius:50%;
+    background: var(--primary); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px;
+}
+.stat-card h3 { margin:0; font-size:28px; font-weight:700; color:#1e293b; }
+.stat-card p { margin:0; color:#64748b; font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+
+.patient-card {
+    background:#fff; border-radius:12px; padding:20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    margin-bottom:16px;
+    display:grid;
+    grid-template-columns: 260px 1fr;
+    gap: 20px;
+}
+.patient-info { border-right: 1px solid #eef2f7; padding-right: 20px; }
+.patient-info h6 { margin:0 0 4px; color:var(--primary); }
+.patient-info .meta { font-size:12px; color:#64748b; line-height:1.7; }
+.patient-info .meta strong { color:#1e293b; }
+.visit-badge {
+    display:inline-block; background: var(--primary); color:#fff;
+    padding: 4px 14px; border-radius: 20px; font-size:11px;
+    font-weight: 600; margin-bottom: 10px;
+}
+.operation-info h6 { font-weight: 700; color: #1e293b; margin: 8px 0; }
+.op-details {
+    background: #f8fafc; padding: 12px; border-radius: 8px;
+    font-size: 13px; line-height: 1.8;
+    border: 1px dashed #cbd5e1;
+}
+.op-details .label { color:#64748b; }
+.info-table { font-size:13px; width:100%; }
+.info-table td { padding: 6px 10px; border-bottom:1px solid #eef2f7; }
+.info-table td:first-child { color:#64748b; width:140px; }
+
+.module-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.module-tabs a {
+    padding: 8px 16px; background:#fff; border-radius:20px;
+    text-decoration:none; color:#475569; font-size:13px;
+    border:1px solid #e2e8f0;
+}
+.module-tabs a:hover, .module-tabs a.active {
+    background: var(--primary); color:#fff; border-color:var(--primary);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 991px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .main-content { margin-left: 0; }
+    .patient-card { grid-template-columns: 1fr; }
+    .patient-info { border-right:none; border-bottom:1px solid #eef2f7; padding-bottom:16px; }
+    .content-area { padding: 16px; }
+}
+@media (max-width: 576px) {
+    .topbar { padding: 12px 16px; }
+    .stat-card h3 { font-size:22px; }
+    .content-area { padding: 12px; }
+    .sidebar-nav .nav-sub { margin-left: 16px; }
+}
